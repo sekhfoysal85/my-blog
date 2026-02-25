@@ -1,18 +1,213 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Private Blog Chat Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indian & Bangladeshi Cooking Blog</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    body {
+      background-color: #fafafa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #ff5722;
+      color: white;
+      padding: 1rem 0.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    header p {
+      font-size: 0.95rem;
+    }
+
+    main {
+      flex: 1;
+      padding: 1rem 0.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .blog-card {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .blog-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .blog-card-content {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-content h3 {
+      color: #ff5722;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .blog-card-content p {
+      font-size: 0.95rem;
+      flex: 1;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 1rem 0.5rem;
+      text-align: center;
+    }
+
+    #login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-width: 400px;
+      margin: 0.5rem auto 0 auto;
+    }
+
+    #login-form input, #login-form button {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    #login-form button {
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #login-form button:hover {
+      background-color: #e64a19;
+    }
+
+    #error {
+      color: red;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      .blog-card img {
+        height: 150px;
+      }
+
+      .blog-card-content h3 {
+        font-size: 1.1rem;
+      }
+
+      .blog-card-content p {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<h2>Login To Private Chat</h2>
+<header>
+  <h1>Indian & Bangladeshi Cooking Blog</h1>
+  <p>Discover delicious recipes and cooking tips from India & Bangladesh</p>
+</header>
 
-<input type="email" id="email" placeholder="Enter Email">
-<input type="password" id="password" placeholder="Enter Password">
-<button onclick="login()">Login</button>
+<main>
+  <!-- Blog Card 1 -->
+  <div class="blog-card">
+    <img src="https://images.unsplash.com/photo-1604908177525-244f7e9d22e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218fHxpbmRpYW4gY29va2luZ3xlbnwwfHx8fDE2OTg3MzQ0NjQ&ixlib=rb-4.0.3&q=80&w=400" alt="Biryani">
+    <div class="blog-card-content">
+      <h3>Classic Chicken Biryani</h3>
+      <p>Learn the secrets to making authentic Indian chicken biryani with aromatic spices and tender meat.</p>
+    </div>
+  </div>
 
-<p id="error"></p>
+  <!-- Blog Card 2 -->
+  <div class="blog-card">
+    <img src="https://images.unsplash.com/photo-1603046891541-6ce83fbc2c3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218fHxiYW5nbGFkZXNoaSBmb29kfGVufDB8fHx8MTY5ODczNDU1Nw&ixlib=rb-4.0.3&q=80&w=400" alt="Hilsa Fish">
+    <div class="blog-card-content">
+      <h3>Hilsa Fish Curry</h3>
+      <p>Step-by-step guide to cook the famous Bangladeshi Hilsa fish curry with mustard and spices.</p>
+    </div>
+  </div>
+
+  <!-- Blog Card 3 -->
+  <div class="blog-card">
+    <img src="https://images.unsplash.com/photo-1605474166211-bc9f9408c63b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218fHxzdGFufGVufDB8fHx8MTY5ODczNDY1Nw&ixlib=rb-4.0.3&q=80&w=400" alt="Paneer Tikka">
+    <div class="blog-card-content">
+      <h3>Paneer Tikka Delight</h3>
+      <p>Discover the best way to make grilled paneer tikka, marinated in flavorful Indian spices.</p>
+    </div>
+  </div>
+
+  <!-- Blog Card 4 -->
+  <div class="blog-card">
+    <img src="https://images.unsplash.com/photo-1627396041941-5d4ad1de39e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218fHxicmlzaGtpdHxlbnwwfHx8fDE2OTg3MzQ3NDM&ixlib=rb-4.0.3&q=80&w=400" alt="Rasgulla">
+    <div class="blog-card-content">
+      <h3>Sweet Rasgulla Recipe</h3>
+      <p>Learn how to make soft, spongy, and sweet Bengali Rasgullas at home with simple ingredients.</p>
+    </div>
+  </div>
+
+  <!-- Blog Card 5 -->
+  <div class="blog-card">
+    <img src="https://images.unsplash.com/photo-1608019193456-b8f1b2293d6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218fHxidW50dGhlcmZyeSUyMGZvb2R8ZW58MHx8fHwxNjk4NzM0ODMz&ixlib=rb-4.0.3&q=80&w=400" alt="Vegetable Curry">
+    <div class="blog-card-content">
+      <h3>Bangladeshi Mixed Vegetable Curry</h3>
+      <p>A delicious, easy-to-cook vegetable curry that’s perfect with rice or paratha.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <h2>Login To Private Chat</h2>
+  <form id="login-form" onsubmit="event.preventDefault(); login();">
+    <input type="email" id="email" placeholder="Enter Email" required>
+    <input type="password" id="password" placeholder="Enter Password" required>
+    <button type="submit">Login</button>
+    <p id="error"></p>
+  </form>
+</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -28,7 +223,7 @@ const firebaseConfig = {
     messagingSenderId: "385643337421",
     appId: "1:385643337421:web:1841f30f16ab71108e3b84",
     measurementId: "G-6TJG5R4MTX"
-  };
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
