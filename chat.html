@@ -1,18 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Secure Private Chat</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Reset & base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #121212; /* Dark background */
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 0.5rem;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #ff5722;
+    }
+
+    #chatBox {
+      flex: 1;
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      padding: 10px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 60vh;
+    }
+
+    /* Chat bubble styles */
+    .message {
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+      border-radius: 20px;
+      word-wrap: break-word;
+      font-size: 0.95rem;
+      display: inline-block;
+    }
+
+    .message.own {
+      background-color: #ff5722;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+    }
+
+    .message.other {
+      background-color: #2e2e2e;
+      color: #fff;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+
+    /* Input container */
+    .input-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    #message {
+      flex: 1 1 auto;
+      padding: 0.75rem;
+      border-radius: 20px;
+      border: 1px solid #444;
+      background-color: #1e1e1e;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 20px;
+      background-color: #ff5722;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      flex: 0 0 auto;
+    }
+
+    button:hover {
+      background-color: #e64a19;
+    }
+
+    @media (max-width: 600px) {
+      #chatBox {
+        max-height: 50vh;
+      }
+
+      #message {
+        font-size: 0.95rem;
+      }
+
+      button {
+        flex: 1 1 48%;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <h2>Private Chat Room</h2>
 
-<div id="chatBox" style="height:300px;overflow-y:scroll;border:1px solid #ccc;padding:10px;"></div>
+<div id="chatBox"></div>
 
-<input type="text" id="message" placeholder="Type message...">
-<button onclick="sendMessage()">Send</button>
-<button onclick="logout()">Logout</button>
+<div class="input-container">
+  <input type="text" id="message" placeholder="Type message...">
+  <button onclick="sendMessage()">Send</button>
+  <button onclick="logout()">Logout</button>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -30,7 +141,7 @@ const firebaseConfig = {
     messagingSenderId: "385643337421",
     appId: "1:385643337421:web:1841f30f16ab71108e3b84",
     measurementId: "G-6TJG5R4MTX"
-  };
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -39,32 +150,47 @@ const db = getDatabase(app);
 const chatRef = ref(db, "privateChat");
 const chatBox = document.getElementById("chatBox");
 
+let currentUserEmail = "";
+
+// Check auth state
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
+  } else {
+    currentUserEmail = user.email;
   }
 });
 
+// Send message
 window.sendMessage = function() {
-  const text = document.getElementById("message").value;
+  const text = document.getElementById("message").value.trim();
   if (text === "") return;
 
   push(chatRef, {
-    sender: auth.currentUser.email,
+    sender: currentUserEmail,
     text: text
   });
 
   document.getElementById("message").value = "";
 }
 
+// Listen for new messages
 onValue(chatRef, (snapshot) => {
   chatBox.innerHTML = "";
   snapshot.forEach((child) => {
     const msg = child.val();
-    chatBox.innerHTML += `<p><b>${msg.sender}:</b> ${msg.text}</p>`;
+    const bubble = document.createElement("div");
+    bubble.classList.add("message");
+    bubble.classList.add(msg.sender === currentUserEmail ? "own" : "other");
+    bubble.innerHTML = `<b>${msg.sender}:</b> ${msg.text}`;
+    chatBox.appendChild(bubble);
   });
+
+  // Scroll to bottom
+  chatBox.scrollTop = chatBox.scrollHeight;
 });
 
+// Logout
 window.logout = function() {
   signOut(auth).then(() => {
     window.location.href = "index.html";
