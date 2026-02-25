@@ -1,0 +1,7 @@
+git pull origin main --rebase
+
+git add .
+
+git commit -m "card item"
+
+git push origin main
